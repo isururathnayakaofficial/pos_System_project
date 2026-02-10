@@ -17,10 +17,10 @@ function loadAllCustomers() {
             customers.forEach(c => {
                 tableBody.append(`
                     <tr>
-                        <td>${c.cid}</td>
-                        <td>${c.cname}</td>
-                        <td>${c.caddress}</td>
-                        <td>${c.cphone}</td>
+                        <td class="customer-id">${c.cid}</td>
+                        <td class="customer-name">${c.cname}</td>
+                        <td class="customer-address">${c.caddress}</td>
+                        <td class="customer-contact">${c.cphone}</td>
                     </tr>
                 `);
             });
@@ -80,9 +80,60 @@ $('#saveCustomer').click(function () {
         }
     });
 });
+$('#updateCustomer').click(function () {
+    var customer = {
+        cid: $('#customerId').val(),
+        cname: $('#customerName').val(),
+        caddress: $('#customerAddress').val(),
+        cphone: $('#customerContact').val()
+    };
+
+    if (!customer.cname || !customer.caddress || !customer.cphone){
+        alert("Fill all fields");
+        return;
+    }
+
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/update-customer',
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(customer),
+        success: function () {
+            alert("Customer Updated successfully!");
+
+            $('#customerName').val('');
+            $('#customerAddress').val('');
+            $('#customerContact').val('');
+
+            loadAllCustomers();      // refresh table
+            loadNextCustomerId();    // update next ID
+        },
+        error: function (err) {
+            console.error(err.responseText);
+            alert("Error saving customer!");
+        }
+    });
+});
 
 // On page load
 $(document).ready(function() {
     loadNextCustomerId(); // auto-fill next ID
     loadAllCustomers();    // load table
+
 });
+
+$(document).on('click', '#customerTable tbody tr', function() {
+    let id = $(this).find('.customer-id').text();
+    let name = $(this).find('.customer-name').text();
+    let address = $(this).find('.customer-address').text();
+    let contact = $(this).find('.customer-contact').text();
+
+    $("#customerId").val(id);
+    $("#customerName").val(name);
+    $("#customerAddress").val(address);
+    $("#customerContact").val(contact);
+});
+
+
+
+

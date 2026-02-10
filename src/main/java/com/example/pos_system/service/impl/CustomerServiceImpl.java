@@ -31,8 +31,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(CustomerDTO CustomerDTO) {
+    public void updateCustomer(CustomerDTO customerDTO) {
+        // 1. Find the existing customer by ID
+        Customer existingCustomer = customerRepo.findById(customerDTO.getCid())
+                .orElseThrow(() -> new RuntimeException(
+                        "Customer not found with ID: " + customerDTO.getCid()
+                ));
 
+        // 2. Update the fields
+        existingCustomer.setCname(customerDTO.getCname());
+        existingCustomer.setCaddress(customerDTO.getCaddress());
+        existingCustomer.setCphone(customerDTO.getCphone());
+
+        // 3. Save the updated customer
+        customerRepo.save(existingCustomer);
     }
 
     @Override

@@ -46,4 +46,8 @@ public class CustomerController {
         num++;
         return String.format("C%03d", num); // C004
     }
+    @PutMapping("/api/v1/update-customer")
+    public void updateCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerService.updateCustomer(customerDTO);
+    }
 }
