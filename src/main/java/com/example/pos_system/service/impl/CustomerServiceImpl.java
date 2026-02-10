@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 
@@ -38,6 +40,20 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return List.of();
+        // fetch all customers from DB
+        List<Customer> customers = (List<Customer>) customerRepo.findAll();
+
+        // convert to DTO
+        List<CustomerDTO> customerDTOs = customers.stream()
+                .map(c -> new CustomerDTO(
+                        c.getCid(),
+                        c.getCname(),
+                        c.getCaddress(),
+                        c.getCphone()
+                ))
+                .collect(Collectors.toList());
+
+        return customerDTOs;
     }
+
 }
