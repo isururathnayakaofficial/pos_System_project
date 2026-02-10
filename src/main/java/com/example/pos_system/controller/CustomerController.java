@@ -47,7 +47,7 @@ public class CustomerController {
         // Get last customer from DB ordered by ID descending
         Customer lastCustomer = customerRepository.findTopByOrderByCidDesc();
         if (lastCustomer == null) {
-            return "C001";
+            return "C001";//first
         }
 
         String lastId = lastCustomer.getCid(); // e.g., "C003"
