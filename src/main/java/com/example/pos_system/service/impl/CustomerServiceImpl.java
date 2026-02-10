@@ -48,7 +48,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(CustomerDTO CustomerDTO) {
+    public void deleteCustomer(CustomerDTO customerDTO) {
+        Customer selected =customerRepo.findById(customerDTO.getCid()).orElseThrow(() -> new RuntimeException(
+                "Customer not found with ID: " + customerDTO.getCid()
+        ));
+        customerRepo.delete(selected);
+
 
     }
 

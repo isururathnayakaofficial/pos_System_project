@@ -114,6 +114,34 @@ $('#updateCustomer').click(function () {
         }
     });
 });
+$('#DeleteCustomer').click(function () {
+    var customer = {
+        cid: $('#customerId').val(),
+        cname: $('#customerName').val(),
+        caddress: $('#customerAddress').val(),
+        cphone: $('#customerContact').val()
+    };
+    $.ajax({
+        url: 'http://localhost:8080/api/v1/delete-customer',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify(customer),
+        success: function () {
+            alert("Customer Deleted successfully!");
+
+            $('#customerName').val('');
+            $('#customerAddress').val('');
+            $('#customerContact').val('');
+
+            loadAllCustomers();      // refresh table
+            loadNextCustomerId();    // update next ID
+        },
+        error: function (err) {
+            console.error(err.responseText);
+            alert("Error saving customer!");
+        }
+    });
+});
 
 // On page load
 $(document).ready(function() {

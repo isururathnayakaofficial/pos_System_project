@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-
 public class CustomerController {
 
     @Autowired
@@ -49,5 +48,10 @@ public class CustomerController {
     @PutMapping("/api/v1/update-customer")
     public void updateCustomer(@RequestBody CustomerDTO customerDTO) {
         customerService.updateCustomer(customerDTO);
+    }
+
+    @DeleteMapping("/api/v1/delete-customer")
+    public void deleteCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerService.deleteCustomer(customerDTO);
     }
 }
