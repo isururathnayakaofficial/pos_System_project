@@ -118,11 +118,14 @@ $('#updateCustomer').click(function () {
 // On page load
 $(document).ready(function() {
     loadNextCustomerId(); // auto-fill next ID
-    loadAllCustomers();    // load table
+    loadAllCustomers();
+    ux();
+    // load table
 
 });
 
 $(document).on('click', '#customerTable tbody tr', function() {
+
     $('#saveCustomer').prop('disabled',true);
     let id = $(this).find('.customer-id').text();
     let name = $(this).find('.customer-name').text();
@@ -134,6 +137,16 @@ $(document).on('click', '#customerTable tbody tr', function() {
     $("#customerAddress").val(address);
     $("#customerContact").val(contact);
 });
+$('#reset').click(function (){
+    ux();
+})
+function ux(){
+    $('#saveCustomer').prop('disabled',false);
+    $('#customerId').val(loadNextCustomerId());
+    $('#customerName').val('');
+    $('#customerAddress').val('');
+    $('#customerContact').val('');
+}
 
 
 
