@@ -123,6 +123,7 @@ $(document).ready(function() {
 });
 
 $(document).on('click', '#customerTable tbody tr', function() {
+    $('#saveCustomer').prop('disabled',true);
     let id = $(this).find('.customer-id').text();
     let name = $(this).find('.customer-name').text();
     let address = $(this).find('.customer-address').text();
