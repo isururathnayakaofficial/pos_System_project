@@ -31,9 +31,19 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
+
+    @PutMapping("/api/v1/update-customer")
+    public void updateCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerService.updateCustomer(customerDTO);
+    }
+
+    @DeleteMapping("/api/v1/delete-customer")
+    public void deleteCustomer(@RequestBody CustomerDTO customerDTO) {
+        customerService.deleteCustomer(customerDTO);
+    }
     // Get next customer ID
     @GetMapping("/api/v1/next-id")
-    public String getNextCustomerId() {
+    public synchronized String  getNextCustomerId() {
         // Get last customer from DB ordered by ID descending
         Customer lastCustomer = customerRepository.findTopByOrderByCidDesc();
         if (lastCustomer == null) {
@@ -44,14 +54,5 @@ public class CustomerController {
         int num = Integer.parseInt(lastId.substring(1)); // 3
         num++;
         return String.format("C%03d", num); // C004
-    }
-    @PutMapping("/api/v1/update-customer")
-    public void updateCustomer(@RequestBody CustomerDTO customerDTO) {
-        customerService.updateCustomer(customerDTO);
-    }
-
-    @DeleteMapping("/api/v1/delete-customer")
-    public void deleteCustomer(@RequestBody CustomerDTO customerDTO) {
-        customerService.deleteCustomer(customerDTO);
     }
 }
