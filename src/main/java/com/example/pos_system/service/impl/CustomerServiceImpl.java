@@ -18,6 +18,8 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepo customerRepo;
     @Override
     public void saveCustomer(CustomerDTO customerDTO) {
+
+
        customerRepo.save(
                new Customer(
                        customerDTO.getCid(),
@@ -55,5 +57,4 @@ public class CustomerServiceImpl implements CustomerService {
 
         return customerDTOs;
     }
-
 }
