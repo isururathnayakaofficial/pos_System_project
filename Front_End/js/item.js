@@ -16,6 +16,7 @@ $('#saveItem').click(function (){
         contentType:'application/json',
         data:JSON.stringify(item),
         success:function (){
+            loadAllItems();
             alert("Item saved successfully");
 
             $('#itemName').val(''),
@@ -57,3 +58,18 @@ function loadAllItems(){
 $(document).ready(function (){
     loadAllItems();
 });
+
+$(document).on('click','#itemTable tbody tr',function (){
+    let id=$(this).find('.item-id').text();
+    let name=$(this).find('.item-name').text();
+    let quantity=$(this).find('.item-quantity').text();
+    let price=$(this).find('.item-price').text();
+
+    $("#itemId").val(id);
+    $("#itemName").val(name);
+    $("#itemQty").val(quantity);
+    $("#itemPrice").val(price);
+
+
+
+})
