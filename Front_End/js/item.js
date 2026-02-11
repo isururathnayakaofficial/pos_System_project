@@ -42,7 +42,7 @@ $('#updateItem').click(function (){
         return;
     }
     $.ajax({
-        url:'http://localhost:8080/api/v2/save_item',
+        url:'http://localhost:8080/api/v2/update_item',
         type:'PUT',
         contentType:'application/json',
         data:JSON.stringify(item),
@@ -55,7 +55,7 @@ $('#updateItem').click(function (){
                 $('#itemPrice').val('')
         },
         error:function (err){
-            alert("Error Update customer!")
+            alert("Error Update item!")
         }
     })
 })
