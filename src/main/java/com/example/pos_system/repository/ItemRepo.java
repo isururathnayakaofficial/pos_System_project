@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ItemRepo extends CrudRepository<Item, String> {
-
+   Item findTopByOrderByIidDesc();
 }
