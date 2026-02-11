@@ -20,7 +20,8 @@ public class ItemServiceImpl implements ItemService {
                 new Item(
                         itemDTO.getIid(),
                         itemDTO.getIName(),
-                        itemDTO.getIQuantity()
+                        itemDTO.getIQuantity(),
+                        itemDTO.getIPrice()
                 )
         );
 

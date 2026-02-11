@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,4 +16,5 @@ public class ItemDTO {
     private String Iid;
     private String IName;
     private String IQuantity;
+    private BigDecimal IPrice;
 }

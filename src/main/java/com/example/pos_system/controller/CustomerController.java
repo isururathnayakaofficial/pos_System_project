@@ -4,12 +4,14 @@ import com.example.pos_system.dto.CustomerDTO;
 import com.example.pos_system.entity.Customer;
 import com.example.pos_system.repository.CustomerRepo;
 import com.example.pos_system.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin
 public class CustomerController {
 

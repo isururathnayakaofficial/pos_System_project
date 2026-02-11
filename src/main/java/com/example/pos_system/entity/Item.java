@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -21,14 +22,17 @@ public class Item {
     private String iid;
     private String iname;
     private String iquantity;
+    private BigDecimal iprice;
     @ManyToMany(mappedBy = "items")
     private List<Customer> customers;
 
 
-    public Item(String iid, String iName, String iQuantity) {
+
+
+    public Item(String iid, String iName, String iQuantity, BigDecimal iprice) {
         this.iid = iid;
         this.iname = iName;
         this.iquantity = iQuantity;
-
+        this.iprice = iprice;
     }
 }
