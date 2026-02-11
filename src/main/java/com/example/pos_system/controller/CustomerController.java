@@ -20,7 +20,7 @@ public class CustomerController {
     private CustomerRepo customerRepository; // needed for next ID
 
     // Save customer
-    @PostMapping("api/v1/customer")
+    @PostMapping("/api/v1/customer")
     public void saveCustomer(@RequestBody CustomerDTO customerDTO) {
         customerService.saveCustomer(customerDTO);
     }
