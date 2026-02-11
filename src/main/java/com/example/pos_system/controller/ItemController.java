@@ -27,5 +27,9 @@ public class ItemController {
     public void updateItem(@RequestBody ItemDTO itemDTO) {
         itemService.updateItem(itemDTO);
     }
+    @DeleteMapping("/api/v2/delete_item")
+    public void deleteItem(@RequestBody ItemDTO itemDTO) {
+        itemService.deleteItem(itemDTO);
+    }
 
 }

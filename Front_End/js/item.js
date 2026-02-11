@@ -103,4 +103,32 @@ $(document).on('click','#itemTable tbody tr',function (){
 
 
 
-})
+});
+$('#deleteItem').click(function () {
+    var item = {
+        Iid: $('#itemId').val(),
+        IName: $('#itemName').val(),
+        IQuantity: $('#itemQty').val(),
+        IPrice: $('#itemPrice').val()
+    };
+    $.ajax({
+        url: 'http://localhost:8080/api/v2/delete_item',
+        type: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify(item),
+        success: function () {
+            alert("Item Deleted successfully!");
+
+            $('#itemName').val('');
+            $('#itemQty').val('');
+            $('#itemPrice').val('');
+
+            loadAllItems();      // refresh table
+                // update next ID
+        },
+        error: function (err) {
+            console.error(err.responseText);
+            alert("Error deleting item!");
+        }
+    });
+});

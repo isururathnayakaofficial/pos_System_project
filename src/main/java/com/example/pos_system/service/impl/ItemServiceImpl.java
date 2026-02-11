@@ -41,6 +41,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(ItemDTO itemDTO) {
+        Item item = itemRepo.findById(itemDTO.getIid()).orElseThrow(()->new RuntimeException(
+                "Item not found"
+        ));
+        itemRepo.delete(item);
 
     }
 
