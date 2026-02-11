@@ -23,5 +23,9 @@ public class ItemController {
     public List<ItemDTO> getAllItems() {
         return itemService.getAllItems();
     }
+    @PutMapping("/api/v2/update_item")
+    public void updateItem(@RequestBody ItemDTO itemDTO) {
+        itemService.updateItem(itemDTO);
+    }
 
 }

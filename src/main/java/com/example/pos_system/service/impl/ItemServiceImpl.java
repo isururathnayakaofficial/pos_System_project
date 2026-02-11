@@ -1,7 +1,6 @@
 package com.example.pos_system.service.impl;
 
 import com.example.pos_system.dto.ItemDTO;
-import com.example.pos_system.entity.Customer;
 import com.example.pos_system.entity.Item;
 import com.example.pos_system.repository.ItemRepo;
 import com.example.pos_system.service.ItemService;
@@ -30,6 +29,13 @@ public class ItemServiceImpl implements ItemService {
     }
     @Override
     public void updateItem(ItemDTO itemDTO) {
+       Item existingItem = itemRepo.findById(itemDTO.getIid()).orElseThrow(()->new RuntimeException(
+               "Item not found"
+       ));
+       existingItem.setIname(itemDTO.getIName());
+       existingItem.setIquantity(itemDTO.getIQuantity());
+       existingItem.setIprice(itemDTO.getIPrice());
+       itemRepo.save(existingItem);
 
     }
 
