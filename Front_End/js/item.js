@@ -27,3 +27,33 @@ $('#saveItem').click(function (){
         }
     })
 })
+function loadAllItems(){
+    $.ajax({
+        url: 'http://localhost:8080/api/v2/get_items',
+        method:'GET',
+        dataType:'json',
+        success:function (items){
+            let tableBody = $("#itemTable tbody");
+            tableBody.empty();
+
+            items.forEach(c => {
+                tableBody.append(`
+                    <tr>
+                        <td class="item-id">${c.Iid}</td>
+                        <td class="item-name">${c.IName}</td>
+                        <td class="item-quantity">${c.IQuantity}</td>
+                        <td class="item-price">${c.IPrice}</td>
+                    </tr>
+                `);
+            });
+        },
+        error: function(err) {
+            console.error("Error fetching items:", err);
+        }
+    });
+
+
+}
+$(document).ready(function (){
+    loadAllItems();
+});
