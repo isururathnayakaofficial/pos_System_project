@@ -4,6 +4,7 @@ package com.example.pos_system.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,9 @@ public class Item {
     private BigDecimal iprice;
     @ManyToMany(mappedBy = "items")
     private List<Customer> customers;
+    @OneToMany(mappedBy = "item")
+    private List<OrderDetails> orderDetails;
+
 
 
 
@@ -34,5 +38,9 @@ public class Item {
         this.iname = iName;
         this.iquantity = iQuantity;
         this.iprice = iprice;
+    }
+
+    public String getItemId() {
+        return iid;
     }
 }

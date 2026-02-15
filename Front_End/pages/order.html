@@ -18,51 +18,39 @@
 
         <div class="row g-3">
 
-            <!-- Customer ID -->
             <div class="col-md-4">
                 <label class="form-label">Customer ID</label>
                 <select class="form-select" id="customerId">
                     <option selected disabled>Select Customer</option>
-                    <option>C001</option>
-                    <option>C002</option>
-                    <option>C003</option>
                 </select>
             </div>
 
-            <!-- Item ID -->
             <div class="col-md-4">
                 <label class="form-label">Item ID</label>
                 <select class="form-select" id="itemId">
                     <option selected disabled>Select Item</option>
-                    <option>I001</option>
-                    <option>I002</option>
-                    <option>I003</option>
                 </select>
             </div>
 
-            <!-- Quantity -->
             <div class="col-md-4">
                 <label class="form-label">Quantity</label>
-                <input type="number" class="form-control" placeholder="Enter Quantity">
+                <input type="number" class="form-control" id="orderQty" placeholder="Enter Quantity">
             </div>
 
-            <!-- Item Name -->
             <div class="col-md-6">
                 <label class="form-label">Item Name</label>
-                <input type="text" class="form-control" placeholder="Item Name" readonly>
+                <input type="text" class="form-control" id="itemName" readonly>
             </div>
 
-            <!-- Price -->
             <div class="col-md-6">
                 <label class="form-label">Price</label>
-                <input type="text" class="form-control" placeholder="Price" readonly>
+                <input type="text" class="form-control" id="itemPrice" readonly>
             </div>
 
         </div>
 
-        <!-- Add Button -->
         <div class="mt-4 text-center">
-            <button class="btn btn-success">Add To List</button>
+            <button class="btn btn-success" id="addToList">Add To List</button>
         </div>
 
     </div>
@@ -71,18 +59,19 @@
     <div class="card p-3 shadow-sm mb-4">
         <h5 class="mb-3">Current Order Items</h5>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table id="orderTable" class="table table-bordered table-hover">
                 <thead class="table-dark">
                 <tr>
                     <th>Item ID</th>
+                    <th>Customer ID</th>
                     <th>Item Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Order items will appear here -->
                 </tbody>
             </table>
         </div>
@@ -90,46 +79,39 @@
 
     <!-- ================== CHECKOUT SECTION ================== -->
     <div class="card p-4 shadow-sm text-center mb-5">
-        <h4 class="mb-3">Total Amount: Rs. 0.00</h4>
+        <h4 class="mb-3">
+            Total Amount: <span id="grandTotal">Rs. 0.00</span>
+        </h4>
         <button class="btn btn-primary btn-lg">Place Order</button>
     </div>
+
+
 
     <!-- ================== PLACED ORDERS TABLE ================== -->
     <div class="card p-3 shadow-sm">
         <h4 class="mb-3 text-center">Placed Orders</h4>
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table id="placedOrdersTable" class="table table-bordered table-hover">
                 <thead class="table-dark">
                 <tr>
                     <th>Order ID</th>
                     <th>Customer ID</th>
                     <th>Order Date</th>
                     <th>Total Amount</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th>Total Items</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Example Row -->
-                <tr>
-                    <td>O001</td>
-                    <td>C001</td>
-                    <td>2026-02-11</td>
-                    <td>Rs. 15,000.00</td>
-                    <td><span class="badge bg-success">Completed</span></td>
-                    <td>
-                        <button class="btn btn-sm btn-info">View</button>
-                    </td>
-                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
+
 </div>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/order.js"></script>
+
 </body>
 </html>

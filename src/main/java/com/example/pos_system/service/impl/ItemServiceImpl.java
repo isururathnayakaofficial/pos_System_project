@@ -63,4 +63,19 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
         return itemDTOS;
     }
+
+    @Override
+    public int getItemStock(String id) {
+        return itemRepo.findById(id)
+                .map(item -> {
+                    try {
+                        return Integer.parseInt(item.getIquantity());
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                })
+                .orElse(0);
+    }
+
+
 }

@@ -28,6 +28,8 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "item_id")
     )
     private List<Item> items;
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 
 
     public Customer(String cid, String cname, String caddress, String cphone) {
@@ -35,6 +37,5 @@ public class Customer {
         this.cname = cname;
         this.caddress = caddress;
         this.cphone = cphone;
-
     }
 }

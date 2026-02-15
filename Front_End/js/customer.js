@@ -65,7 +65,6 @@ $('#saveCustomer').click(function () {
         contentType: 'application/json',
         data: JSON.stringify(customer),
         success: function () {
-            alert("Customer saved successfully!");
 
             $('#customerName').val('');
             $('#customerAddress').val('');

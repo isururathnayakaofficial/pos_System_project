@@ -4,8 +4,12 @@ import com.example.pos_system.dto.CustomerDTO;
 import com.example.pos_system.entity.Customer;
 import com.example.pos_system.repository.CustomerRepo;
 import com.example.pos_system.service.CustomerService;
+import com.example.pos_system.util.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +27,11 @@ public class CustomerController {
 
     // Save customer
     @PostMapping("/api/v1/customer")
-    public void saveCustomer(@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<ApiResponse<String>> saveCustomer(@RequestBody CustomerDTO customerDTO) {
         customerService.saveCustomer(customerDTO);
+        return new ResponseEntity(new ApiResponse<>(
+                201,"Customer Saved",null
+        ), HttpStatus.CREATED);
     }
 
     // Get all customers
@@ -45,16 +52,16 @@ public class CustomerController {
     }
     // Get next customer ID
     @GetMapping("/api/v1/next-id")
-    public synchronized String  getNextCustomerId() {
-        // Get last customer from DB ordered by ID descending
+    public String  getNextCustomerId() {
+
         Customer lastCustomer = customerRepository.findTopByOrderByCidDesc();
         if (lastCustomer == null) {
             return "C001";//first
         }
 
-        String lastId = lastCustomer.getCid(); // e.g., "C003"
-        int num = Integer.parseInt(lastId.substring(1)); // 3
+        String lastId = lastCustomer.getCid();
+        int num = Integer.parseInt(lastId.substring(1));
         num++;
-        return String.format("C%03d", num); // C004
+        return String.format("C%03d", num);
     }
 }
