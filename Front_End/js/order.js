@@ -155,58 +155,51 @@ $('#placeorder').click(function () {
         return;
     }
 
+    let updateRequests = [];
+
+    // 1️⃣ First update all item quantities
     cart.forEach(function (cartItem) {
 
+        let updateObj = {
+            itemId: cartItem.itemId,
+            qty: cartItem.qty
+        };
+
+        let request = $.ajax({
+            url: "http://localhost:8080/update_item",
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(updateObj)
+        });
+
+        updateRequests.push(request);
+    });
+
+    // 2️⃣ After ALL updates success → place order
+    $.when.apply($, updateRequests).done(function () {
+
         $.ajax({
-            url: "http://localhost:8080/api/v3/item_stock/" + cartItem.itemId,
-            method: "GET",
-            success: function (dbQty) {
-                let orderDate = new Date().toISOString().split('T')[0];
-                let newQty = dbQty - cartItem.qty;
-                var placeOrder={
-                    CustomerId:$('#customerId').val(),
-                    ItemName:$('itemName').val(),
-                    OrderDate:$(orderDate).val(),
-                    TotalAmount:$('#grandTotal').val(),
-                }
+            url: 'http://localhost:8080/api/v3/place_order',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(placeOrder),
+            success: function () {
+                alert("Order placed successfully!");
 
-                let updateObj = {
-                    Iid: cartItem.itemId,
-                    IQuantity: newQty
-                };
-
-                $.ajax({
-                    url: "http://localhost:8080/api/v2/update_item",
-                    type: "PUT",
-                    contentType: "application/json",
-                    data: JSON.stringify(updateObj),
-                    success: function () {
-                        console.log("Updated:", cartItem.itemId);
-
-                        $.ajax({
-                            url:'http://localhost:8080/api/v3/place_order',
-                            type:'POST',
-                            contentType:'application/json',
-                            data:JSON.stringify(placeOrder),
-                            success:function (){
-                                alert("order placed successfully")
-                            }
-                        })
-                    },
-                    error: function () {
-                        alert("Error updating item: " + cartItem.itemId);
-                    }
-                });
-
+                cart = [];
+                renderTable();
+            },
+            error: function () {
+                alert("Error placing order!");
             }
         });
 
+    }).fail(function () {
+        alert("Error updating items!");
     });
 
-    alert("Order placed successfully!");
-    cart = [];
-    renderTable();
 });
+
 
 
 // ================= RENDER TABLE =================

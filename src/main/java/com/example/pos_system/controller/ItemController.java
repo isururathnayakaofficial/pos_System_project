@@ -1,6 +1,7 @@
 package com.example.pos_system.controller;
 
 import com.example.pos_system.dto.ItemDTO;
+import com.example.pos_system.dto.UpdateQtyDTO;
 import com.example.pos_system.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class ItemController {
     @DeleteMapping("/api/v2/delete_item")
     public void deleteItem(@RequestBody ItemDTO itemDTO) {
         itemService.deleteItem(itemDTO);
+    }
+    @PutMapping("/update_item")
+    public void updateItem(@RequestBody UpdateQtyDTO dto) {
+        itemService.updateQty(dto);
     }
 
 }

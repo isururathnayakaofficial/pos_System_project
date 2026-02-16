@@ -1,6 +1,7 @@
 package com.example.pos_system.service.impl;
 
 import com.example.pos_system.dto.ItemDTO;
+import com.example.pos_system.dto.UpdateQtyDTO;
 import com.example.pos_system.entity.Item;
 import com.example.pos_system.repository.ItemRepo;
 import com.example.pos_system.service.ItemService;
@@ -76,6 +77,51 @@ public class ItemServiceImpl implements ItemService {
                 })
                 .orElse(0);
     }
+
+    @Override
+    public int currentUserStock(String id, int orderedQty) {
+        Item item = itemRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        try {
+            int currentQty = Integer.parseInt(item.getIquantity());
+
+            if (currentQty < orderedQty) {
+                throw new RuntimeException("Not enough stock");
+            }
+
+            int updatedQty = currentQty - orderedQty;
+
+            item.setIquantity(String.valueOf(updatedQty));
+            itemRepo.save(item);
+
+            return updatedQty;
+
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Invalid quantity format");
+        }
+    }
+
+    @Override
+    public void updateQty(UpdateQtyDTO dto) {
+
+        Item item = itemRepo.findById(dto.getItemId())
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        int currentQty = Integer.parseInt(item.getIquantity()); // if it's String
+
+        int newQty = currentQty - dto.getQty();
+
+        if (newQty < 0) {
+            throw new RuntimeException("Insufficient stock");
+        }
+
+        item.setIquantity(String.valueOf(newQty));
+        itemRepo.save(item);
+    }
+
+
+
 
 
 }
