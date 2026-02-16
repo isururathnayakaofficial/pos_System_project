@@ -148,6 +148,66 @@ $("#addToList").click(function () {
 
 });
 
+$('#placeorder').click(function () {
+
+    if (cart.length === 0) {
+        alert("Cart is empty!");
+        return;
+    }
+
+    cart.forEach(function (cartItem) {
+
+        $.ajax({
+            url: "http://localhost:8080/api/v3/item_stock/" + cartItem.itemId,
+            method: "GET",
+            success: function (dbQty) {
+                let orderDate = new Date().toISOString().split('T')[0];
+                let newQty = dbQty - cartItem.qty;
+                var placeOrder={
+                    CustomerId:$('#customerId').val(),
+                    ItemName:$('itemName').val(),
+                    OrderDate:$(orderDate).val(),
+                    TotalAmount:$('#grandTotal').val(),
+                }
+
+                let updateObj = {
+                    Iid: cartItem.itemId,
+                    IQuantity: newQty
+                };
+
+                $.ajax({
+                    url: "http://localhost:8080/api/v2/update_item",
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(updateObj),
+                    success: function () {
+                        console.log("Updated:", cartItem.itemId);
+
+                        $.ajax({
+                            url:'http://localhost:8080/api/v3/place_order',
+                            type:'POST',
+                            contentType:'application/json',
+                            data:JSON.stringify(placeOrder),
+                            success:function (){
+                                alert("order placed successfully")
+                            }
+                        })
+                    },
+                    error: function () {
+                        alert("Error updating item: " + cartItem.itemId);
+                    }
+                });
+
+            }
+        });
+
+    });
+
+    alert("Order placed successfully!");
+    cart = [];
+    renderTable();
+});
+
 
 // ================= RENDER TABLE =================
 function renderTable() {
