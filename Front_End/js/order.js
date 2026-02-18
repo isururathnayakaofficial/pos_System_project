@@ -7,14 +7,12 @@ $(document).ready(function () {
     loadItemIds();
 });
 
-
 // ================= LOAD CUSTOMERS =================
 function loadCustomerIds() {
     $.ajax({
         url: "http://localhost:8080/api/v1/get_customers",
         method: "GET",
         success: function (response) {
-
             $("#customerId").empty();
             $("#customerId").append(`<option selected disabled>Select Customer</option>`);
 
@@ -30,14 +28,12 @@ function loadCustomerIds() {
     });
 }
 
-
 // ================= LOAD ITEMS =================
 function loadItemIds() {
     $.ajax({
         url: "http://localhost:8080/api/v2/get_items",
         method: "GET",
         success: function (response) {
-
             itemList = response;
 
             $("#itemId").empty();
@@ -55,15 +51,11 @@ function loadItemIds() {
     });
 }
 
-
 // ================= ITEM SELECT =================
 $("#itemId").on("change", function () {
-
     let selectedId = $(this).val();
 
-    selectedItem = itemList.find(function (item) {
-        return item.Iid === selectedId;
-    });
+    selectedItem = itemList.find(item => item.Iid === selectedId);
 
     if (selectedItem) {
         $("#itemName").val(selectedItem.IName);
@@ -74,6 +66,7 @@ $("#itemId").on("change", function () {
     }
 });
 
+// ================= ADD TO CART =================
 $("#addToList").click(function () {
 
     let customerId = $('#customerId').val();
@@ -97,7 +90,7 @@ $("#addToList").click(function () {
         return;
     }
 
-    //  REAL TIME STOCK CHECK FROM DATABASE
+    // Check stock in real-time
     $.ajax({
         url: "http://localhost:8080/api/v3/item_stock/" + itemId,
         method: "GET",
@@ -113,21 +106,16 @@ $("#addToList").click(function () {
                 return;
             }
 
-            // If stock OK → add to cart
             let existing = cart.find(item => item.itemId === itemId);
 
             if (existing) {
-
                 if ((existing.qty + qty) > dbQty) {
                     alert("Stock exceeded! Available quantity: " + dbQty);
                     return;
                 }
-
                 existing.qty += qty;
                 existing.total = existing.qty * existing.price;
-
             } else {
-
                 cart.push({
                     itemId: itemId,
                     customerId: customerId,
@@ -148,6 +136,8 @@ $("#addToList").click(function () {
 
 });
 
+let orderCounter = 1; // initialize at 1 or last order number
+
 $('#placeorder').click(function () {
 
     if (cart.length === 0) {
@@ -157,13 +147,9 @@ $('#placeorder').click(function () {
 
     let updateRequests = [];
 
-    // 1️⃣ First update all item quantities
+    // First, update stock
     cart.forEach(function (cartItem) {
-
-        let updateObj = {
-            itemId: cartItem.itemId,
-            qty: cartItem.qty
-        };
+        let updateObj = { itemId: cartItem.itemId, qty: cartItem.qty };
 
         let request = $.ajax({
             url: "http://localhost:8080/update_item",
@@ -175,23 +161,39 @@ $('#placeorder').click(function () {
         updateRequests.push(request);
     });
 
-    // 2️⃣ After ALL updates success → place order
     $.when.apply($, updateRequests).done(function () {
 
-        $.ajax({
-            url: 'http://localhost:8080/api/v3/place_order',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(placeOrder),
-            success: function () {
-                alert("Order placed successfully!");
+        let orderRequests = [];
 
-                cart = [];
-                renderTable();
-            },
-            error: function () {
-                alert("Error placing order!");
-            }
+        cart.forEach(function (cartItem) {
+
+            // Increment order ID one by one
+            let orderData = {
+                orderId: "O" + orderCounter,
+                itemId: cartItem.itemId,
+                customerId: cartItem.customerId,
+                date: new Date().toISOString(),
+                amount: cartItem.total
+            };
+
+            orderCounter++; // increment for next order
+
+            let request = $.ajax({
+                url: 'http://localhost:8080/api/v3/place_order',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(orderData)
+            });
+
+            orderRequests.push(request);
+        });
+
+        $.when.apply($, orderRequests).done(function () {
+            alert("All orders placed successfully!");
+            cart = [];
+            renderTable();
+        }).fail(function () {
+            alert("Error placing one or more orders!");
         });
 
     }).fail(function () {
@@ -229,26 +231,20 @@ function renderTable() {
     calculateGrandTotal();
 }
 
-
 // ================= REMOVE ITEM =================
 function removeItem(index) {
     cart.splice(index, 1);
     renderTable();
 }
 
-
 // ================= GRAND TOTAL =================
 function calculateGrandTotal() {
-
     let grandTotal = 0;
-
     cart.forEach(function (item) {
         grandTotal += item.total;
     });
-
     $("#grandTotal").text("Rs. " + grandTotal.toFixed(2));
 }
-
 
 // ================= CLEAR FIELDS =================
 function clearFields() {
