@@ -137,8 +137,6 @@ $("#addToList").click(function () {
 
 });
 
-let orderCounter = 1; // initialize at 1 or last order number
-
 $('#placeorder').click(function () {
 
     if (cart.length === 0) {
@@ -168,16 +166,16 @@ $('#placeorder').click(function () {
 
         cart.forEach(function (cartItem) {
 
-            // Increment order ID one by one
+            // Client no longer sends orderId — server will generate a new one
             let orderData = {
-                orderId: "O" + orderCounter,
+                // orderId: "O" + orderCounter,
                 itemId: cartItem.itemId,
                 customerId: cartItem.customerId,
                 date: new Date().toISOString(),
                 amount: cartItem.total
             };
 
-            orderCounter++; // increment for next order
+            // orderCounter++; // increment removed
 
             let request = $.ajax({
                 url: 'http://localhost:8080/api/v3/place_order',

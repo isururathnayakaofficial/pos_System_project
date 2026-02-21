@@ -10,9 +10,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +30,9 @@ public class OrderServiceImpl implements OrderService {
 
         // Create Order
         Order order = new Order();
-        order.setOrderId(dto.getOrderId());
+        // Always generate a new order id on the server to avoid accidental updates when clients reuse ids
+        String generatedId = "O" + UUID.randomUUID().toString().replace("-", "");
+        order.setOrderId(generatedId);
         order.setCustomer(customer);
         order.setDate(dto.getDate());
         order.setAmount(dto.getAmount());
@@ -62,4 +64,3 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 }
-
