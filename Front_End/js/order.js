@@ -5,6 +5,7 @@ let cart = [];
 $(document).ready(function () {
     loadCustomerIds();
     loadItemIds();
+    loadOrders();
 });
 
 // ================= LOAD CUSTOMERS =================
@@ -253,4 +254,39 @@ function clearFields() {
     $("#itemPrice").val("");
     $("#orderQty").val("");
     selectedItem = null;
+}
+
+function loadOrders() {
+
+    $.ajax({
+        url: 'http://localhost:8080/api/v3/fetchAllOrders',
+        method: 'GET',
+        dataType: 'json',
+
+        success: function (orders) {
+
+            console.log(orders); // Debug check
+
+            let tableBody = $("#placedOrdersTable tbody");
+            tableBody.empty();
+
+            orders.forEach(function (c) {
+
+                tableBody.append(`
+                    <tr>
+                        <td class="order-id">${c.orderId}</td>
+                        <td class="customer-id">${c.customerId}</td>
+                        <td class="order-date">${c.date}</td>
+                        <td class="order-amount">${c.amount}</td>
+                    </tr>
+                `);
+
+            });
+        },
+
+        error: function (err) {
+            console.log("Error loading orders:", err);
+            alert("Failed to load orders!");
+        }
+    });
 }

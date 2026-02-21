@@ -38,4 +38,8 @@ public class Customer {
         this.caddress = caddress;
         this.cphone = cphone;
     }
+
+    public String getCustomerId() {
+        return cid;
+    }
 }

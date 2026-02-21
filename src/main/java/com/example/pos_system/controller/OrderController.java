@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class OrderController {
@@ -24,6 +26,10 @@ public class OrderController {
     public int getItemStock(@PathVariable String id) {
        int qty= itemService.getItemStock(id);
         return qty;
+    }
+    @GetMapping("/api/v3/fetchAllOrders")
+    public List<OrderDTO> getAllOrders() {
+        return orderService.getOrders();
     }
 
 

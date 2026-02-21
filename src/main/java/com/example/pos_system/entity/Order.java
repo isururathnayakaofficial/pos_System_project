@@ -29,12 +29,10 @@ private BigDecimal amount;
 
 
 
-
-    public Order(String orderId, String itemId, Customer customer, Date date, BigDecimal amount) {
+    public Order(String orderId, Customer customer, Date date, BigDecimal amount) {
         this.orderId = orderId;
         this.customer = customer;
         this.date = date;
         this.amount = amount;
-
     }
 }

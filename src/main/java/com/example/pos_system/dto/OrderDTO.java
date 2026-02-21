@@ -18,4 +18,13 @@ public class OrderDTO {
     private String customerId;
     private Date date;
     private BigDecimal amount;
+
+
+
+    public OrderDTO(String orderId, String cid, BigDecimal amount, Date date) {
+        this.orderId = orderId;
+        this.customerId = cid; // store customer id in customerId (was incorrectly assigned to itemId)
+        this.amount = amount;
+        this.date = date;
+    }
 }
